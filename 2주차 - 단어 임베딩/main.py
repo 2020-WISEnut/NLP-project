@@ -65,7 +65,7 @@ class WordVectorCorrelation:
         
         with open(os.path.join(load_path, corpus_file_name), 'r', encoding='utf-8') as f:
             for line in f:
-                dataset = re.sub(r"[^가-힣A-Z]+", " ", line.upper()).strip().split()
+                dataset = re.sub(r"[^ㄱ-힣A-Za-z]+", " ", line).strip().split()
                 for i in range(len(dataset)-1):
                     if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
                         dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
