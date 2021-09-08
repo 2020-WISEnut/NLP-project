@@ -68,7 +68,7 @@ class WordVectorCorrelation:
                 dataset = re.sub(r"[^가-힣A-Z]+", " ", line.upper()).strip().split()
                 for i in range(len(dataset)-1):
                     if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
-                        dataset[i], dataset[i+1] = (weird_words + weird_words[dataset[i]]), ""
+                        dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
                 datasets.append(' '.join(dataset).split())
         
         self.preprocess(preprocess_option)
