@@ -3,7 +3,7 @@
 from numpy.lib.function_base import vectorize
 import yaml
 import re
-from gensim.models import Word2Vec
+#from gensim.models import Word2Vec
 import os
 from scipy import stats
 from matplotlib import pyplot as plt
@@ -20,13 +20,12 @@ class WordVectorCorrelation:
         preprocess_option = config["preprocess_option"]
         vectorizer_type = config["vectorizer_type"]
         save_path = config["save_path"]
-        model_arg = config["model_arg"]
 
         # load data and preprocess
         datasets = self.load_data(load_path)
 
         # get word vectors
-        word_vectors = self.get_word_vectors(datasets, vectorizer_type, model_arg)
+        word_vectors = self.get_word_vectors(datasets, vectorizer_type)
 
         # save word vectors
         file_name = "size300_win8_cnt10.wv"
@@ -50,16 +49,39 @@ class WordVectorCorrelation:
         corpus_file_name = "wiki_ko_mecab.txt"
         ##################### TO DO #####################
         
+        weird_words = {"똑똑": "한", 
+                       "씨": "디",
+                       "고양이": "과",
+                       "육식": "동물",
+                       "정신": "의학",
+                       "수집": "품",
+                       "독립": "체",
+                       "인종": "차별",
+                       "유사": "도",
+                       "근접": "성",
+                       "랍": "스터",
+                       "중요": "성",
+                       "멍청": "한"}
+        
+        with open(os.path.join(load_path, corpus_file_name), 'r', encoding='utf-8') as f:
+            for line in f:
+                dataset = re.sub(r"[^가-힣A-Z]+", " ", line.upper()).strip().split()
+                for i in range(len(dataset)-1):
+                    if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
+                        dataset[i], dataset[i+1] = (weird_words + weird_words[dataset[i]]), ""
+                datasets.append(' '.join(dataset).split())
+        
         self.preprocess(preprocess_option)
 
         return datasets
 
     def preprocess(self, preprocess_option):
         ##################### TO DO #####################
+            
         pass
 
-    def get_word_vectors(self, datasets, vectorizer_type, model_arg):
-        vectorizer = Vectorizer(vectorizer_type, model_arg)
+    def get_word_vectors(self, datasets, vectorizer_type):
+        vectorizer = Vectorizer(vectorizer_type)
         word_vectors = vectorizer.vectorize(datasets)
 
         return word_vectors
@@ -80,16 +102,12 @@ class WordVectorCorrelation:
 
 
 class Vectorizer:
-    def __init__(self, vectorizer_type, model_arg):
+    def __init__(self, vectorizer_type):
         self.vectorizer_type = vectorizer_type
-        self.model_arg = model_arg
 
-    def vectorize(self, datasets):
-        if self.vectorizer_type == 1:
-            model = Word2Vec(datasets, **self.model_arg)
-            word_vectors = model.wv
-        
-        return word_vectors
+    def vectorize(self):
+        ##################### TO DO #####################
+        pass
 
 
 if __name__ == "__main__":
