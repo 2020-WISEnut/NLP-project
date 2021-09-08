@@ -7,12 +7,21 @@ load_path: "./data"
 # 3: 한글, 영어 제외 제거, 불용어 제거
 preprocess_option: 1
 
-# 단어 임베딩 
+# 단어 임베딩 종류
 # 1: gensim의 Word2Vec
 # 2: Fasttext
 # 3: GloVe
 # 4: Swivel
 vectorizer_type: 1
+
+# 모델 파라미터
+model_arg: 
+  size: 300
+  workers: 8
+  sg: 1
+  window: 5
+  min_count: 10
+  sample: 0.00001
 
 # Word vectors 저장 위치
 save_path: "./save"
