@@ -95,7 +95,7 @@ class WordVectorCorrelation:
         for weird_word in weird_words:
             no_space_word = weird_word.replace(" ","")
             # weird_word 에 공백 제거
-            text = text.replace(weird_word, no_space_word)
+            text.replace(weird_word, no_space_word)
             
         return text
 
