@@ -96,7 +96,18 @@ class WordVectorCorrelation:
             if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
                 dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
         
-        return ' '.join(dataset).split()
+        text = ' '.join(dataset)
+        if preprocess_option in [3, 4]:
+            text = self.remove_stopwords(text)
+
+        return text.split()
+
+    def remove_stopwords(self, text: str):
+        with open("stopwords.txt", encoding="utf-8") as stopwords:
+            for stopword in stopwords:
+                text = text.replace(stopword.strip(), "")
+        
+        return text
 
     def get_word_vectors(self, datasets, vectorizer_type, model_arg):
         vectorizer = Vectorizer(vectorizer_type, model_arg)
