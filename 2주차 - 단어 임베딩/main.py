@@ -26,7 +26,7 @@ class WordVectorCorrelation:
         save_path = config["save_path"]
         
         # load data and preprocess
-        datasets = self.load_data(load_path)
+        datasets = self.load_data(load_path, preprocess_option)
 
         # get word vectors
         word_vectors = self.get_word_vectors(datasets, vectorizer_type, model_arg)
