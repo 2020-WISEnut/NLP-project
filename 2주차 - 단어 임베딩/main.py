@@ -5,6 +5,7 @@ import yaml
 import re
 from gensim.models import Word2Vec
 import os
+import sys
 from scipy import stats
 from matplotlib import pyplot as plt
 
@@ -47,7 +48,6 @@ class WordVectorCorrelation:
         datasets = []
         # load data
         corpus_file_name = "wiki_ko_mecab.txt"
-        ##################### TO DO #####################
         
         weird_words = {"똑똑": "한", 
                        "씨": "디",
@@ -65,20 +65,26 @@ class WordVectorCorrelation:
         
         with open(os.path.join(load_path, corpus_file_name), 'r', encoding='utf-8') as f:
             for line in f:
-                dataset = re.sub(r"[^ㄱ-힣A-Za-z]+", " ", line).strip().split()
-                for i in range(len(dataset)-1):
-                    if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
-                        dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
-                datasets.append(' '.join(dataset).split())
+                dataset = self.preprocess(line, preprocess_option, weird_words)
+                datasets.append(dataset)
         
-        self.preprocess(preprocess_option)
-
         return datasets
 
-    def preprocess(self, preprocess_option):
-        ##################### TO DO #####################
-            
-        pass
+    def preprocess(self, text, preprocess_option, weird_words):
+        if preprocess_option in [1, 3]:
+            pat = r"[^가-힣A-Za-z]+"
+        elif preprocess_option in [2, 4]:
+            pat = r"[^가-힣A-Za-z0-9]+"
+        else:
+            print("Preprocessing option not valid.")
+            sys.exit()
+
+        dataset = re.sub(pat), " ", text).strip().split()
+        for i in range(len(dataset)-1):
+            if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
+                dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
+        
+        return ' '.join(dataset).split()
 
     def get_word_vectors(self, datasets, vectorizer_type, model_arg):
         vectorizer = Vectorizer(vectorizer_type, model_arg)
