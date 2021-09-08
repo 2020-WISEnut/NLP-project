@@ -1,0 +1,18 @@
+# train set 과 test set 파일 위치
+load_path: "./data"
+
+# 전처리 옵션
+# 1: 한글, 영어, 숫자 제외 제거
+# 2: 한글, 영어 제외 제거
+# 3: 한글, 영어 제외 제거, 불용어 제거
+preprocess_option: 1
+
+# 단어 임베딩 
+# 1: gensim의 Word2Vec
+# 2: Fasttext
+# 3: GloVe
+# 4: Swivel
+vectorizer_type: 1
+
+# Word vectors 저장 위치
+save_path: "./save"
