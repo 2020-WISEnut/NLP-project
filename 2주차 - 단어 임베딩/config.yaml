@@ -24,5 +24,8 @@ model_arg:
   min_count: 10
   sample: 0.00001
 
+# 저장 여부
+save_whether: false
+
 # Word vectors 저장 위치
 save_path: "./save"
