@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from numpy.lib.function_base import vectorize
+from numpy.lib.npyio import save
 import yaml
 import re
 from gensim.models import Word2Vec
@@ -20,17 +21,19 @@ class WordVectorCorrelation:
         load_path = config["load_path"]
         preprocess_option = config["preprocess_option"]
         vectorizer_type = config["vectorizer_type"]
-        save_path = config["save_path"]
         model_arg = config["model_arg"]
-
+        save_option = config["save_option"]
+        save_path = config["save_path"]
+        
         # load data and preprocess
         datasets = self.load_data(load_path)
 
         # get word vectors
         word_vectors = self.get_word_vectors(datasets, vectorizer_type, model_arg)
         # save word vectors
-        file_name = "size300_win8_cnt10.wv"
-        self.save_word_vectors(word_vectors, save_path, file_name, vectorizer_type)
+        if save_option:
+            file_name = "size300_win8_cnt10.wv"
+            self.save_word_vectors(word_vectors, save_path, file_name, vectorizer_type)
 
         # get lists of word similarities
         # 단어 유사도 리스트
@@ -41,8 +44,14 @@ class WordVectorCorrelation:
         print('spearman: %.5f, pearson: %.5f' % (spearman, pearson))
 
     def get_config(self):
-        ##################### TO DO #####################
-        pass
+        try:
+            with open("config.yaml", "r", encoding='utf-8') as f:
+                config = yaml.load(f, Loader=yaml.FullLoader)
+        except IOError:
+            print("config.yaml not found")
+            sys.exit()
+
+        return config
 
     def load_data(self, load_path, preprocess_option):
         datasets = []
@@ -62,12 +71,15 @@ class WordVectorCorrelation:
                        "랍": "스터",
                        "중요": "성",
                        "멍청": "한"}
-        
-        with open(os.path.join(load_path, corpus_file_name), 'r', encoding='utf-8') as f:
-            for line in f:
-                dataset = self.preprocess(line, preprocess_option, weird_words)
-                datasets.append(dataset)
-        
+        try:
+            with open(os.path.join(load_path, corpus_file_name), 'r', encoding='utf-8') as f:
+                for line in f:
+                    dataset = self.preprocess(line, preprocess_option, weird_words)
+                    datasets.append(dataset)
+        except IOError:
+            print("failed to open file")
+            sys.exit()
+
         return datasets
 
     def preprocess(self, text, preprocess_option, weird_words):
@@ -93,18 +105,41 @@ class WordVectorCorrelation:
         return word_vectors
 
     def save_word_vectors(self, word_vectors, save_path, file_name, vectorizer_type):
-        ##################### TO DO #####################
-        pass
+        if vectorizer_type == 1:
+            word_vectors.save_word2vec_format(os.path.join(save_path, file_name))
 
-    def get_word_similarity(self, word_vectors, load_path):
+    def get_word_similarity(self, word_vectors, load_path, vectorizer_type):
         answer_list, pred_list = [], []
-        ##################### TO DO #####################
+
+        testset = 'kor_ws353.csv'
+        testset_path = os.path.join(load_path, testset)
+
+        if vectorizer_type == 1:
+            try:
+                with open(testset_path, 'r', encoding='utf-8-sig') as testfile:
+                    for pair in testfile:
+                        w1, w2, sim = pair.strip().split(',')
+                        try:
+                            pred = word_vectors.similarity(w1, w2)
+                            answer_list.append(float(sim))
+                            pred_list.append(pred)
+                        except KeyError as e:
+                            # 단어 임베딩에 포함되지 않은 단어들
+                            print(e)
+            except IOError:
+                print("fail to open file")
+                sys.exit()
+        else:
+            print("vectorizer type not valid.")
+            sys.exit()      
 
         return answer_list, pred_list
 
     def get_correlation(self, answer_list, pred_list):
-        ##################### TO DO #####################
-        pass
+        spearman, _ = stats.spearmanr(answer_list, pred_list)
+        pearson, _ = stats.pearsonr(answer_list, pred_list)
+
+        return spearman, pearson
 
 
 class Vectorizer:
@@ -116,6 +151,9 @@ class Vectorizer:
         if self.vectorizer_type == 1:
             model = Word2Vec(datasets, **self.model_arg)
             word_vectors = model.wv
+        else:
+            print("vectorizer type not valid.")
+            sys.exit()
         
         return word_vectors
 
