@@ -3,7 +3,7 @@
 from numpy.lib.function_base import vectorize
 import yaml
 import re
-from gensim.models import Word2Vec
+#from gensim.models import Word2Vec
 import os
 from scipy import stats
 from matplotlib import pyplot as plt
@@ -20,13 +20,12 @@ class WordVectorCorrelation:
         preprocess_option = config["preprocess_option"]
         vectorizer_type = config["vectorizer_type"]
         save_path = config["save_path"]
-        model_arg = config["model_arg"]
 
         # load data and preprocess
         datasets = self.load_data(load_path)
 
         # get word vectors
-        word_vectors = self.get_word_vectors(datasets, vectorizer_type, model_arg)
+        word_vectors = self.get_word_vectors(datasets, vectorizer_type)
 
         # save word vectors
         file_name = "size300_win8_cnt10.wv"
@@ -58,8 +57,8 @@ class WordVectorCorrelation:
         ##################### TO DO #####################
         pass
 
-    def get_word_vectors(self, datasets, vectorizer_type, model_arg):
-        vectorizer = Vectorizer(vectorizer_type, model_arg)
+    def get_word_vectors(self, datasets, vectorizer_type):
+        vectorizer = Vectorizer(vectorizer_type)
         word_vectors = vectorizer.vectorize(datasets)
 
         return word_vectors
@@ -80,16 +79,12 @@ class WordVectorCorrelation:
 
 
 class Vectorizer:
-    def __init__(self, vectorizer_type, model_arg):
+    def __init__(self, vectorizer_type):
         self.vectorizer_type = vectorizer_type
-        self.model_arg = model_arg
 
-    def vectorize(self, datasets):
-        if self.vectorizer_type == 1:
-            model = Word2Vec(datasets, **self.model_arg)
-            word_vectors = model.wv
-        
-        return word_vectors
+    def vectorize(self):
+        ##################### TO DO #####################
+        pass
 
 
 if __name__ == "__main__":
