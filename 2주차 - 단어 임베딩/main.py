@@ -92,11 +92,13 @@ class WordVectorCorrelation:
             sys.exit()
 
         dataset = re.sub(pat, " ", text).strip().split()
-        for i in range(len(dataset)-1):
-            if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
-                dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
-        
-        return ' '.join(dataset).split()
+
+        for weird_word in weird_words:
+            no_space_word = weird_word.replace(" ","")
+            # weird_word 에 공백 제거
+            text.replace(weird_word, no_space_word)
+            
+        return text
 
     def get_word_vectors(self, datasets, vectorizer_type, model_arg):
         vectorizer = Vectorizer(vectorizer_type, model_arg)
