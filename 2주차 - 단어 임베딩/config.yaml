@@ -25,7 +25,7 @@ model_arg:
   sample: 0.00001
 
 # 저장 여부
-save_whether: false
+save_option: false
 
 # Word vectors 저장 위치
 save_path: "./save"
