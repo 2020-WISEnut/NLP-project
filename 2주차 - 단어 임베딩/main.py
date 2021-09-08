@@ -37,7 +37,7 @@ class WordVectorCorrelation:
 
         # get lists of word similarities
         # 단어 유사도 리스트
-        answer_list, pred_list = self.get_word_similarity(word_vectors, load_path)
+        answer_list, pred_list = self.get_word_similarity(word_vectors, load_path, vectorizer_type)
 
         # get spearman and pearson correlation
         spearman, pearson = self.get_correlation(answer_list, pred_list)
