@@ -40,19 +40,21 @@ class WordVectorCorrelation:
         print('spearman: %.5f, pearson: %.5f' % (spearman, pearson))
 
     def get_config(self):
+        ##################### TO DO #####################
         pass
 
     def load_data(self, load_path, preprocess_option):
         datasets = []
         # load data
         corpus_file_name = "wiki_ko_mecab.txt"
-        pass
-
+        ##################### TO DO #####################
+        
         self.preprocess(preprocess_option)
 
         return datasets
 
     def preprocess(self, preprocess_option):
+        ##################### TO DO #####################
         pass
 
     def get_word_vectors(self, datasets, vectorizer_type):
@@ -62,14 +64,17 @@ class WordVectorCorrelation:
         return word_vectors
 
     def save_word_vectors(self, word_vectors, save_path, file_name, vectorizer_type):
+        ##################### TO DO #####################
         pass
 
     def get_word_similarity(self, word_vectors, load_path):
         answer_list, pred_list = [], []
+        ##################### TO DO #####################
 
         return answer_list, pred_list
 
     def get_correlation(self, answer_list, pred_list):
+        ##################### TO DO #####################
         pass
 
 
@@ -78,6 +83,7 @@ class Vectorizer:
         self.vectorizer_type = vectorizer_type
 
     def vectorize(self):
+        ##################### TO DO #####################
         pass
 
 
