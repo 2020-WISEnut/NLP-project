@@ -58,19 +58,19 @@ class WordVectorCorrelation:
         # load data
         corpus_file_name = "wiki_ko_mecab.txt"
         
-        weird_words = ['고양이 과',
-                       '근접 성',
-                       '독립 체',
-                       '똑똑 한',
-                       '랍 스터',
-                       '멍청 한',
-                       '수집 품',
-                       '씨 디',
-                       '유사 도',
-                       '육식 동물',
-                       '인종 차별',
-                       '정신 의학',
-                       '중요 성']
+        weird_words = {"똑똑": "한", 
+                       "씨": "디",
+                       "고양이": "과",
+                       "육식": "동물",
+                       "정신": "의학",
+                       "수집": "품",
+                       "독립": "체",
+                       "인종": "차별",
+                       "유사": "도",
+                       "근접": "성",
+                       "랍": "스터",
+                       "중요": "성",
+                       "멍청": "한"}
         try:
             with open(os.path.join(load_path, corpus_file_name), 'r', encoding='utf-8') as f:
                 for line in f:
@@ -92,6 +92,7 @@ class WordVectorCorrelation:
             sys.exit()
 
         dataset = re.sub(pat, " ", text).strip().split()
+
         for weird_word in weird_words:
             no_space_word = weird_word.replace(" ","")
             # weird_word 에 공백 제거
