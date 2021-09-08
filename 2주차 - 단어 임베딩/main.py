@@ -79,7 +79,7 @@ class WordVectorCorrelation:
             print("Preprocessing option not valid.")
             sys.exit()
 
-        dataset = re.sub(pat), " ", text).strip().split()
+        dataset = re.sub(pat, " ", text).strip().split()
         for i in range(len(dataset)-1):
             if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
                 dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
