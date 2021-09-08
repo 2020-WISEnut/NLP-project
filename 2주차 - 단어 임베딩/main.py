@@ -84,9 +84,9 @@ class WordVectorCorrelation:
 
     def preprocess(self, text, preprocess_option, weird_words):
         if preprocess_option in [1, 3]:
-            pat = r"[^가-힣A-Za-z]+"
-        elif preprocess_option in [2, 4]:
             pat = r"[^가-힣A-Za-z0-9]+"
+        elif preprocess_option in [2, 4]:
+            pat = r"[^가-힣A-Za-z]+"
         else:
             print("Preprocessing option not valid.")
             sys.exit()
