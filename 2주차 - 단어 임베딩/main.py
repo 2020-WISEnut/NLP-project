@@ -162,6 +162,15 @@ class Vectorizer:
         if self.vectorizer_type == 1:
             model = Word2Vec(datasets, **self.model_arg)
             word_vectors = model.wv
+        elif self.vectorizer_type == 2:
+            ############ Fasttext ############
+            pass
+        elif self.vectorizer_type == 3:
+            ############# GloVe ##############
+            pass
+        elif self.vectorizer_type == 4:
+            ############# Swivel #############
+            pass
         else:
             print("vectorizer type not valid.")
             sys.exit()
