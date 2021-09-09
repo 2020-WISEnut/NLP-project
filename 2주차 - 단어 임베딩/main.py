@@ -150,7 +150,7 @@ class WordVectorCorrelation:
 
         if vectorizer_type == 1:
             for pair in testset:
-                w1, w2, sim = pair.strip().split(',')
+                w1, w2, sim = pair
                 try:
                     pred = word_vectors.similarity(w1, w2)
                     answer_list.append(float(sim))
