@@ -124,7 +124,7 @@ class WordVectorCorrelation:
     def remove_stopwords(self, text: str):
         with open("stopwords.txt", encoding="utf-8") as stopwords:
             for stopword in stopwords:
-                text = text.replace(stopword.strip(), "")
+                text = text.replace(stopword, "")
         
         return text
 
