@@ -57,7 +57,7 @@ class WordVectorCorrelation:
     def load_testset(self, load_path):
         testset_path = os.path.join(load_path, 'kor_ws353.csv')
         testset = []
-        vocab = {}
+        vocab = set()
         try:
             with open(testset_path, 'r', encoding='utf-8-sig') as testfile:
                 for pair in testfile:
