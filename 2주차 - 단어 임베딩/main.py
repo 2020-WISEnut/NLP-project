@@ -126,17 +126,16 @@ class WordVectorCorrelation:
             if dataset[i] in weird_words and dataset[i+1] == weird_words[dataset[i]]:
                 dataset[i], dataset[i+1] = (dataset[i] + dataset[i+1]), ""
         
-        text = ' '.join(dataset)
         if preprocess_option in [3, 4]:
-            text = self.remove_stopwords(text, stopwords)
+            text = self.remove_stopwords(dataset, stopwords)
 
         return text.split()
 
-    def remove_stopwords(self, text: str, stopwords: set):
+    def remove_stopwords(self, dataset: list, stopwords: set):
         removed_text = ""
-        for word in text:
+        for word in dataset:
             if word not in stopwords:
-                removed_text += text + " "
+                removed_text += word + " "
         
         return removed_text
 
