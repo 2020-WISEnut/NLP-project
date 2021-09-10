@@ -28,7 +28,7 @@ class WordVectorCorrelation:
         # load data and preprocess
         testset, vocab = self.load_testset(load_path)
         stopwords = self.load_stopwords(load_path)
-        datasets = self.load_data(load_path, vocab, preprocess_option)
+        datasets = self.load_data(load_path, vocab, preprocess_option, stopwords)
 
         # get word vectors
         word_vectors = self.get_word_vectors(datasets, vectorizer_type, model_arg)
@@ -82,7 +82,7 @@ class WordVectorCorrelation:
         
         return stopwords_set
 
-    def load_data(self, load_path, vocab, preprocess_option):
+    def load_data(self, load_path, vocab, preprocess_option, stopwords):
         datasets = []
         # load data
         corpus_file_name = "wiki_ko_mecab.txt"
@@ -103,7 +103,7 @@ class WordVectorCorrelation:
         try:
             with open(os.path.join(load_path, corpus_file_name), 'r', encoding='utf-8') as f:
                 for line in f:
-                    dataset = self.preprocess(line, preprocess_option, weird_words)
+                    dataset = self.preprocess(line, preprocess_option, weird_words, stopwords)
                     if self.has_vocab(dataset, vocab):
                         datasets.append(dataset)
         except IOError:
@@ -112,7 +112,7 @@ class WordVectorCorrelation:
 
         return datasets
 
-    def preprocess(self, text, preprocess_option, weird_words):
+    def preprocess(self, text, preprocess_option, weird_words, stopwords):
         if preprocess_option in [1, 3]:
             pat = r"[^가-힣A-Za-z0-9]+"
         elif preprocess_option in [2, 4]:
