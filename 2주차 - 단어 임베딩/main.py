@@ -27,6 +27,7 @@ class WordVectorCorrelation:
         
         # load data and preprocess
         testset, vocab = self.load_testset(load_path)
+        stopwords = self.load_stopwords(load_path)
         datasets = self.load_data(load_path, vocab, preprocess_option)
 
         # get word vectors
@@ -70,6 +71,16 @@ class WordVectorCorrelation:
             sys.exit()
 
         return testset, vocab
+    
+    def load_stopwords(self, load_path):
+        stopwords_path = os.path.join(load_path, 'stopwords.txt')
+        stopwords_set = set()
+        
+        with open(stopwords_path, 'r', encoding='utf-8') as stopwords:
+            for stopword in stopwords:
+                stopwords_set.add(stopword.strip())
+        
+        return stopwords_set
 
     def load_data(self, load_path, vocab, preprocess_option):
         datasets = []
@@ -117,16 +128,17 @@ class WordVectorCorrelation:
         
         text = ' '.join(dataset)
         if preprocess_option in [3, 4]:
-            text = self.remove_stopwords(text)
+            text = self.remove_stopwords(text, stopwords)
 
         return text.split()
 
-    def remove_stopwords(self, text: str):
-        with open("stopwords.txt", encoding="utf-8") as stopwords:
-            for stopword in stopwords:
-                text = text.replace(stopword, "")
+    def remove_stopwords(self, text: str, stopwords: set):
+        removed_text = ""
+        for word in text:
+            if word not in stopwords:
+                removed_text += text + " "
         
-        return text
+        return removed_text
 
     def has_vocab(self, dataset: str, vocab: set):
         for word in vocab:
