@@ -5,6 +5,7 @@ from numpy.lib.npyio import save
 import yaml
 import re
 from gensim.models import Word2Vec
+from gensim.models import FastText
 import os
 import sys
 from scipy import stats
@@ -171,7 +172,15 @@ class WordVectorCorrelation:
                     print(e)
         elif self.vectorizer_type == 2:
             ############ Fasttext ############
-            pass
+            for pair in testset:
+                w1, w2, sim = pair
+                try:
+                    pred = word_vectors.similarity(w1, w2)
+                    answer_list.append(float(sim))
+                    pred_list.append(pred)
+                except KeyError as e:
+                    # 단어 임베딩에 포함되지 않은 단어들
+                    print(e)
         elif self.vectorizer_type == 3:
             ############# GloVe ##############
             pass
@@ -202,7 +211,8 @@ class Vectorizer:
             word_vectors = model.wv
         elif self.vectorizer_type == 2:
             ############ Fasttext ############
-            pass
+            model = FastText(datasets, **self.model_arg)
+            word_vectors = model.wv
         elif self.vectorizer_type == 3:
             ############# GloVe ##############
             pass
